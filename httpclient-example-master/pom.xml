@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yiji.boot</groupId>
+        <artifactId>yiji-boot-starter-parent</artifactId>
+        <version>1.2-SNAPSHOT</version>
+    </parent>
+    <groupId>com.glory.httpclient</groupId>
+    <artifactId>httpclient-example-master-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>httpclient-example-master Projects</name>
+    <url>http://www.yiji.com</url>
+    <packaging>pom</packaging>
+    <modules>
+        <module>httpclient-example-master-assemble</module>
+        <module>httpclient-example-master-biz</module>
+        <module>httpclient-example-master-common</module>
+        <module>httpclient-example-master-dal</module>
+        <module>httpclient-example-master-domain</module>
+        <module>httpclient-example-master-facade</module>
+        <module>httpclient-example-master-integration</module>
+        <module>httpclient-example-master-test</module>
+        <module>httpclient-example-master-web</module>
+    </modules>
+</project>

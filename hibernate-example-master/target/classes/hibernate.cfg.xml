@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <!-- a SessionFactory instance listed as /jndi/name -->
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/hibernate?useUnicode=true&amp;allowMultiQueries=true&amp;
+            characterEncoding=UTF8&amp;zeroDateTimeBehavior=convertToNull
+        </property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">false</property>
+           <!--
+           create，start create
+           create-drop, start create and exit drop
+           update, 表不存在就创建，表有差异就更新...增加信息会有效。改变信息一般不生效
+           validate 表结构不一致，抛异常
+           -->
+        <property name="hbm2ddl.auto">create-drop</property>
+        <mapping class="hibernate.entity.Test"/>
+
+        <mapping resource="hibernate/HelloWorld.hbm.xml" />
+        <mapping resource="hibernate/BasicType.hbm.xml" />
+        <mapping resource="hibernate/BeanCollection.xml"/>
+        <mapping resource="hibernate/relation/many2one.xml"/>
+    </session-factory>
+</hibernate-configuration>

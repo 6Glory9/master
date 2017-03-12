@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="hibernate.xml.collection">
+    <class name="BeanCollection" table="t_bean_collection">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="userName" column="user_name" length="50"/>
+
+          <!--无序，无重复
+          sort 是内存中排序，效率不高
+          -->
+        <set name="addressSet" table="t_address_set">
+            <key column="user_id" />
+            <element type="string">
+                <column name="address"/>
+            </element>
+        </set>
+            <!--有序，可重复-->
+        <list name="addressList" table="t_address_list">
+            <key column="user_id" />
+            <list-index column="_index" />
+            <element type="string">
+                <column name="address" />
+            </element>
+        </list>
+        <!--无序，无重复-->
+        <map name="addressMap" table="t_address_map">
+            <key column="user_id" />
+            <map-key type="string">
+                <column name="key_from" />
+            </map-key>
+            <element type="string">
+                <column name="address" />
+            </element>
+        </map>
+        <!--有序，可重复-->
+        <array name="adddressArray" table="t_adddress_Array">
+            <key column="user_id" />
+            <index column="_idx"></index>
+            <element type="string">
+                <column name="address" />
+            </element>
+        </array>
+        <!--无序，可重复-->
+        <bag name="addressBag" table="t_address_bag">
+            <key column="user_id" />
+            <element type="string">
+                <column name="address" />
+            </element>
+        </bag>
+
+
+    </class>
+</hibernate-mapping>

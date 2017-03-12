@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="test_acountion" action="/yjf/login.htm" method="post">
+    username:<input id="username" name="username"/>
+    <hr/>
+    password:<input id="password" name="password"/>
+    <hr/>
+
+    <input id="rememberMe" type="radio" name="rememberMe" value="生活"/>
+    <hr/>
+    <input type="submit" value="confire">
+</form>
+</body>
+</html>

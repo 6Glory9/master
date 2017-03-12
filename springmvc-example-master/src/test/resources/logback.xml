@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+
+    <contextName>glory</contextName>
+
+    <if condition='property("os.name").toUpperCase().contains("WINDOWS")'>
+        <then>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss}[%thread]%-6level%logger{36}:%L-%msg%n</pattern>
+                </encoder>
+            </appender>
+            <root>
+                <appender-ref ref="STDOUT"/>
+            </root>
+        </then>
+    </if>
+    <root level="INFO"/>
+</configuration>

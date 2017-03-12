@@ -1,0 +1,57 @@
+SessionRepositoryFilter
+	sessionRepository：
+	servletContext：
+	httpSessionStrategy：
+
+
+doFilterInternal
+	SessionRepositoryRequestWrapper
+		requestedSessionIdValid：sessionId Valid mark(有效)
+		requestedSessionInvalidated:session valided mark
+		response:
+		request:
+	SessionRepositoryResponseWrapper
+		SessionRepositoryRequestWrapper
+		response:
+
+
+HttpSessionStrategy（SID相关在各生命周期与客服端操作）
+	getRequestedSessionId 获取sessionID方式,cookie and header and URL
+	onNewSession 创建一个新的session，通过cookie and header and URL 通知客服端
+	onInvalidateSession session失效,对sid的操作
+
+RequestResponsePostProcessor
+	wrapResponse，包装
+	wrapRequest，包装
+MultiHttpSessionStrategyAdapter
+	没有做操作
+
+CookieHttpSessionStrategy
+	getSession(boolean create)
+	1.当前session从request取出
+	2.根据存在requestedSessionId，从远程获取session,标示false,保存到request
+	3.新建session，保存到request
+
+	changeSessionId()
+	  创建一个new session ,delete old session
+	  source session bind new session
+	  old session Attributes bind new session
+
+	 commitSession()
+	 	1.current不存在，session valid  没有操作
+	 	2.current 不存在，session valided  相应onInvalidateSession操作
+	 	3.同步远程session,sid没有改变，没有操作
+	 	4.同步远程session,sid改变，相应onNewSession(session, this, response)
+
+
+	HttpSessionWrapper 每个操作都检查session invald
+		invalidated:session 有效标示
+		session:真实会话
+		invalidate()
+			invalidated=true,
+			request.requestedSessionInvalidated=true
+			request.setCurrentSession(null)
+			sessionRepository.delete(id)
+	
+	
+

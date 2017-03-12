@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+     MultiResourceItemReader 支持读多个资源
+     1.支持文件格式CVS,txt 纯文本
+     2.支持text format
+             Separator-based
+             Fixed length-based
+             JSON format
+     -->
+    <bean id="flatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="resource" value="${flatFile.readFile}"/>
+        <property name="linesToSkip" value="1"/>
+        <property name="recordSeparatorPolicy"
+                  ref="customRecordSeparatorPolicy"/>
+        <property name="lineMapper" ref="customLineMapper"/>
+        <property name="encoding" value="utf-8"/>
+        <property name="strict" value="true"/>
+        <property name="comments" value="userName,age,sex" />
+    </bean>
+
+    <bean id="customRecordSeparatorPolicy"
+          class="org.springframework.batch.item.file.separator.DefaultRecordSeparatorPolicy"/>
+
+
+    <!--PatternMatchingCompositeLineMapper支持读多个文件-->
+    <bean id="customLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="customFieldSetMapper"/>
+        <property name="lineTokenizer" ref="customLineTokenizer"/>
+    </bean>
+
+
+    <bean id="customLineTokenizer"
+          class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+        <property name="delimiter" value=","/>
+        <property name="names" value="userName,age,sex"/>
+    </bean>
+
+
+    <bean id="userInfo" class="bean.UserInfo" scope="prototype"/>
+
+    <bean id="customFieldSetMapper" class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+        <property name="prototypeBeanName" value="userInfo"/>
+    </bean>
+</beans>

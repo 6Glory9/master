@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="hibernate.xml.basictype">
+
+    <class name="BasicType" table="t_basic_type">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <property name="userName" column="user_name" type="string" length="50"/>
+        <property name="age" column="age" type="int"/>
+        <property name="gender" length="10">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.yjf.common.lang.enums.GenderEnum</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+
+        <property
+                name="money" column="money" type="hibernate.xml.basictype.MoneyType"/>
+
+        <property name="birthday" column="birthday" type="date"/>
+        <property name="rawAddTime" column="raw_add_time" type="timestamp"/>
+        <property name="rawUpdateTime" column="raw_update_time" type="timestamp"/>
+        <property name="infoDesc" >
+            <column name="info_desc" sql-type="text" not-null="true" />
+        </property>
+
+        <property name="img" column="img" type="binary" />
+    </class>
+</hibernate-mapping>

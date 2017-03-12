@@ -1,0 +1,59 @@
+ProxyConfig--代理配置bean
+	AdvisedSupport(Advised)-- a configuration of a factory mark
+		AopProxy--创建代理对象工厂
+
+	ScopedProxyFactoryBean  扫描建立FactoryBean
+
+	AbstractSingletonProxyFactoryBean
+		事物创建工厂
+
+	ProxyProcessorSupport(AopInfrastructureBean) -- autoProxying,pointcut
+		AbstractAdvisingBeanPostProcessor 把一个Advisor注入特定类中这系列
+			eligibleBeans：能匹配Advisor的bean缓存
+			1.AopInfrastructureBean return;
+			2.创建aop工厂(Advised)  add Advisor
+			3.能匹配Advisor的Bean，构造ProxyFactory
+			AbstractBeanFactoryAwareAdvisingPostProcessor --config beanfactory
+			  exposeTargetClass,setProxyTargetClass
+
+			MethodValidationPostProcessor
+					MethodValidationInterceptor(ExecutableValidator,MethodValidator)
+			PersistenceExceptionTranslationPostProcessor
+					@Repository
+
+
+		AbstractAutoProxyCreator   -- 创建proxy模板方法(自动创建系统)
+			targetSourcedBeans：目标缓存
+			advisedBeans:proxy factory 标示缓存 true标示 proxy factory|false 标示 isInfrastructureClass，null不存在
+			customTargetSourceCreators：targetSourceCreate原型创建器
+			proxyTypes:proxy type Cache
+			interceptorNames:通用接口
+			applyCommonInterceptorsFirst:通用先发标示
+
+
+			getAdvicesAndAdvisorsForBean 子类实现
+
+			BeanTypeAutoProxyCreator
+			name匹配的用通用通用接口Advisor
+
+			SpringIbatisBeanTypeAutoProxyCreator（BeanNameAutoProxyCreator） 写得不好
+
+
+			AbstractAdvisorAutoProxyCreator
+				advisorRetrievalHelper:提取advisor 工具 from beanFactory
+
+				findCandidateAdvisors  钩子方法
+				extendAdvisors 钩子方法
+				isEligibleAdvisorBean 钩子方法
+
+					DefaultAdvisorAutoProxyCreator
+						isEligibleAdvisorBean 重写
+					InfrastructureAdvisorAutoProxyCreator
+						isEligibleAdvisorBean 重写
+					AspectJAwareAdvisorAutoProxyCreator
+						extendAdvisors 重写 添加暴露MethodInvocation
+						shouldSkip 重写
+						sortAdvisors 重写
+						AnnotationAwareAspectJAutoProxyCreator
+						  findCandidateAdvisors 重写
+						  		advisors.addAll(this.aspectJAdvisorsBuilder.buildAspectJAdvisors());

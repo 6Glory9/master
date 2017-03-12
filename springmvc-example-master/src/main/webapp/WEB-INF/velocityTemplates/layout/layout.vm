@@ -1,0 +1,2 @@
+#set ($JQ="$")
+${screen_content}

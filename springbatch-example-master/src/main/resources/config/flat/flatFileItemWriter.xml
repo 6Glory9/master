@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="flatFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+        <property name="encoding" value="UTF-8"/>
+        <property name="transactional" value="true"/>
+        <property name="appendAllowed" value="true"/>
+        <property name="shouldDeleteIfEmpty" value="true"/>
+        <property name="shouldDeleteIfExists" value="true"/>
+        <property name="headerCallback" ref="customHeaderCallback"/>
+        <property name="footerCallback" ref="customFooterCallback"/>
+        <property name="resource" value="${flatFile.writeFile}"/>
+        <property name="lineAggregator" ref="customLineAggregator"/>
+    </bean>
+
+    <bean id="customLineAggregator" class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+        <property name="delimiter" value="|"/>
+        <property name="fieldExtractor" ref="customFieldExtractor"/>
+    </bean>
+
+    <bean id="customFieldExtractor" class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+        <property name="names">
+            <array>
+                <value>userName</value>
+                <value>age</value>
+                <value>sex</value>
+            </array>
+        </property>
+    </bean>
+
+    <bean id="customHeaderCallback" class="util.CustomHeaderCallback"/>
+    <bean id="customFooterCallback" class="util.CustomFooterCallback"/>
+
+
+</beans>

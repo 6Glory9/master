@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="hibernate.xml.helloworld">
+    <class name="HelloWorld" table="t_hello_world">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <property name="userName" column="user_name" length="50"/>
+        <property name="sex" column="sex" length="10"/>
+    </class>
+</hibernate-mapping>
