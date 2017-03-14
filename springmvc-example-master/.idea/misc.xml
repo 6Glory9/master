@@ -3,9 +3,9 @@
   <component name="EclipseCodeFormatter">
     <option name="defaultSettings" value="true" />
     <option name="formatter" value="ECLIPSE" />
-    <option name="id" value="1417680468200" />
+    <option name="id" value="1458385417797" />
     <option name="name" value="default" />
-    <option name="pathToConfigFileJava" value="E:/idea_formatter/formatter_20150812.xml" />
+    <option name="pathToConfigFileJava" value="F:/IT/install-tools/IDE/idea_formatter/formatter_2015年7月24日.xml" />
     <option name="selectedJavaProfile" value="Yi ji fu Convention" />
   </component>
   <component name="MavenProjectsManager">
@@ -77,9 +77,6 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="false" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
-  </component>
-  <component name="SvnConfiguration">
-    <configuration>C:\Users\Glory\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
