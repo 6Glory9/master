@@ -1,0 +1,31 @@
+REGEX:\.(bmp|css|js|gif|ico|jp?g|png|swf|woff)$
+
+www.cqgjj.cn;
+
+http://www.cqgjj.cn/html/user/login.html
+.*\.(bmp|css|js|gif|ico|jp?g|png|swf|woff)
+
+REGEX:\.(bmp|css|js|gif|ico|jp?g|png|swf|woff)$
+
+0.µÇÂ½Ò³Ãæ
+http://www.cqgjj.cn/html/user/login.html?UserType=gr
+
+
+µÇÂ½
+1.http://www.cqgjj.cn/html/user/index.html
+	 
+2.http://www.cqgjj.cn/Member/gr/gjjyecx.aspx
+	 cookie
+	 UM_distinctid=15acb9b1cf3c2-016a5fd4548229-57e1b3c-100200-15acb9b1cf429f; 
+	 ASP.NET_SessionId=ox33f5fff4fnx1bw5m4wf4kj; 
+	 CNZZDATA4427218=cnzz_eid%3D1502645544-1464230351-null%26ntime%3D1489474239
+	 
+
+
+0 = {Element@2427} "<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="lkk3cvHBTvboACqLoPixeDmluAGGgYRffkRK8iyCFZNXinwg+iazhmakldBzsyr84v/SJJR9mt/o1QDE4URdkWobN0oaP2zs9sqwGbnd/a0W2izLpaGQJ9CQbu4wUUijJ4DjEQ==">"
+1 = {Element@2428} "<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="9B5805F3">"
+2 = {Element@2429} "<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="nPw+ach/ZtoXTiUoA+j3/WV0iqmtJI/sasRTc/IWYEzC5rlBvEZyiAujFHol/Oyh6J1IXp+NTYlEh13P4Q0eClzBtJ7G8rA5i7UZ4BCdsriwON7TW+G5c6nuB7m35Sw0CuynqYPLCKfB1/gpXhNttvtkP121eINKKVp6KIS3jbEWoGVIAXPMvK44LskSS9Vg9eA6RlF7LXCoSfjoxZ/USRhneW8=">"
+3 = {Element@2430} "<input name="txt_loginname" type="text" id="txt_loginname" class="text">"
+4 = {Element@2431} "<input name="txt_pwd" type="password" id="txt_pwd" class="text">"
+5 = {Element@2432} "<input name="txt_code" type="text" id="txt_code" class="code">"
+6 = {Element@2433} "<input type="submit" name="but_send" value="" id="but_send" class="loginbut">"
