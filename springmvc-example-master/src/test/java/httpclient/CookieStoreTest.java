@@ -30,13 +30,14 @@ public class CookieStoreTest extends HttpClientBaseTest {
 		HttpContext httpContext = new HttpClientContext();
 		
 		CloseableHttpResponse closeableHttpResponse = builderCookieStoreHttpClient()
-			.execute(new HttpGet(builderAddress(HTTP_PROTOCL, CQGJ_LOGIN_ASPX_URL)), httpContext);
+			.execute(new HttpGet("https://passport.jd.com/new/login.aspx"), httpContext);
 
 
 		CloseableHttpResponse codeResponse = builderCookieStoreHttpClient()
 				.execute(new HttpGet(builderAddress(HTTP_PROTOCL, CQGJ_CODE_ASPX_URL)), httpContext);
 		
 		String html = EntityUtils.toString(closeableHttpResponse.getEntity());
+		logger.info(html);
 		
 		Document document = Jsoup.parse(html);
 		

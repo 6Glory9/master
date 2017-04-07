@@ -40,9 +40,9 @@ public class CqController extends BaseController {
 	
 	private final static Map<String, HttpClientContext> cache = new HashMap<>();
 	
-	private final static List<ConvertEnum> loginConverUtils = ConvertEnum.getLogin();
+	private final static List<ConvertEnum> loginConvertUtils = ConvertEnum.getLogin();
 	
-	private final static List<ConvertEnum> infoConverUtils = ConvertEnum.getInfo();
+	private final static List<ConvertEnum> infoConvertUtils = ConvertEnum.getInfo();
 	
 	@RequestMapping("/cq/jumpIndex")
 	public String jumpIndex(Model model) {
@@ -52,24 +52,22 @@ public class CqController extends BaseController {
 	
 	@RequestMapping("/cq/viewCode")
 	public void viewVerificationCode(String requestId, HttpServletResponse response) {
-		
 		try {
 			HttpClientContext httpContext = new HttpClientContext();
 			
-			CloseableHttpResponse tokenReponse = HttpClients.custom().build()
+			CloseableHttpResponse tokenResponse = HttpClients.custom().build()
 				.execute(builderGetRequest(CQGJ_LOGIN_ASPX_URL), httpContext);
 			
-			parseTokenAndStore(httpContext, tokenReponse);
+			parseTokenAndStore(httpContext, tokenResponse);
 			
-			cache.put(requestId, httpContext);
-			
-			CloseableHttpResponse verificationCodeReponse = HttpClients.custom().build()
+			CloseableHttpResponse verificationCodeResponse = HttpClients.custom().build()
 				.execute(builderGetRequest(CQGJ_CODE_ASPX_URL), httpContext);
 			
-			verificationCodeReponse.getEntity().writeTo(response.getOutputStream());
+			verificationCodeResponse.getEntity().writeTo(response.getOutputStream());
+			
+			cache.put(requestId, httpContext);
 		} catch (Exception e) {
-			e.printStackTrace();
-			//TODO
+			logger.error("加载验证码失败", e);
 		}
 		
 	}
@@ -78,12 +76,10 @@ public class CqController extends BaseController {
 		
 		Document document = Jsoup.parse(EntityUtils.toString(response.getEntity()));
 		
-		for (ConvertEnum elementName : loginConverUtils) {
+		for (ConvertEnum elementName : loginConvertUtils) {
 			String token = parseToken(document, elementName.getSelectKey());
 			
-			if (token != null) {
-				httpContext.setAttribute(elementName.getSelectKey(), token);
-			}
+			httpContext.setAttribute(elementName.getSelectKey(), token);
 		}
 		
 	}
@@ -92,14 +88,20 @@ public class CqController extends BaseController {
 	@ResponseBody
 	public CqInfo login(CqForm form) throws IOException {
 		
-		doLogin(form);
+		try {
+			doLogin(form);
+			
+			CloseableHttpResponse infoResponse = HttpClients.custom().build()
+				.execute(builderGetRequest(CQGJ_INFO_ASPX_URL), getClientContext(form));
+			
+			cache.remove(form.getRequestId());
+			
+			return parseInfo(infoResponse);
+		} catch (Exception e) {
+			logger.error("登陆失败", e);
+		}
 		
-		CloseableHttpResponse infoResponse = HttpClients.custom().build().execute(builderGetRequest(CQGJ_INFO_ASPX_URL),
-			getClientContext(form));
-
-        cache.remove(form.getRequestId());
-
-        return parseInfo(infoResponse);
+		return new CqInfo();
 		
 	}
 	
@@ -108,16 +110,16 @@ public class CqController extends BaseController {
 		BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(new CqInfo());
 		
 		Map<String, String> props = new HashMap<>();
-		for (ConvertEnum convertName : infoConverUtils) {
+		for (ConvertEnum convertName : infoConvertUtils) {
 			String fliedValue = getText(document, convertName.getSelectKey());
 			props.put(convertName.getInputTextName(), fliedValue);
 			
 		}
 		
 		bw.setPropertyValues(props);
-
+		
 		logger.info(bw.getWrappedInstance().toString());
-
+		
 		return (CqInfo) bw.getWrappedInstance();
 	}
 	
@@ -154,7 +156,7 @@ public class CqController extends BaseController {
 	
 	private void addTokens(CqForm form, List<NameValuePair> params) {
 		
-		for (ConvertEnum elementName : loginConverUtils) {
+		for (ConvertEnum elementName : loginConvertUtils) {
 			String token = getClientContext(form).getAttribute(elementName.getSelectKey(), String.class);
 			if (token == null) {
 				//TODO
