@@ -9,11 +9,10 @@
  *
  */
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.yjf.common.lang.util.money.Money;
+import com.yjf.common.payengine.enums.CurrencyEnum;
+import entity.account.Account;
+import generator.entity.Transfer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -21,14 +20,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import repository.AccountRepository;
 import repository.SuspicionRepository;
+import repository.TransferMapper;
+import repository.TransferRepository;
 import trace.TradeTrace;
 
-import com.yjf.common.lang.util.money.Money;
-import com.yjf.common.payengine.enums.CurrencyEnum;
-import entity.account.Account;
+import java.util.*;
 
 /**
  * @author jxilong@yiji.com
@@ -45,6 +46,58 @@ public class SpringMybatisTest {
 	
 	@Autowired
 	private SuspicionRepository suspicionRepository;
+
+	@Autowired
+	private TransferRepository transferRepository;
+
+	@Autowired
+	private TransactionTemplate transactionTemplate;
+
+	@Autowired
+	private TransferMapper transferMapper;
+
+	private List<String> bizNoList = Arrays.asList("004j00601h6o0ka2pk00", "004j00601h6o0ka2pm00", "004j00601h6o0ka2ms00",
+			"004j00601h6o0ka2as00", "004j00601h6o0ka2bs00", "004j00601h6o0ka2cs00"
+	);
+
+
+	@Test
+	public void testLock() throws InterruptedException {
+		for(int i=0;i<250;i++) {
+			Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for(String bizNo:bizNoList) {
+						lockAndUpdate(bizNo);
+					}
+				}
+			});
+			thread.start();
+
+			thread.join();
+		}
+
+
+
+	}
+
+
+	private void lockAndUpdate(final String bizNo) {
+		try {
+			transactionTemplate.execute(new TransactionCallback() {
+                @Override
+                public Object doInTransaction(TransactionStatus status) {
+					Transfer transfer = transferMapper.lockByBizNo(bizNo);
+
+					transferMapper.updateByPrimaryKey(transfer);
+					logger.info("test transfer[{}]",transfer);
+					return transfer;
+                }
+            });
+		} catch (Exception e) {
+			logger.info("异常问题出现",e);
+		}
+	}
 	
 	@Test
 	public void testSpring() {

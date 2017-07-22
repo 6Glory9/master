@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="repository.SuspicionRepository">
+
+
+    <resultMap id="tradeTrace" type="trace.TradeTrace">
+        <result property="payerAccountNo" column="payer_account" />
+        <result property="payeeAccountNo" column="payee_account" />
+    </resultMap>
+
+
+
+    <insert id="addSuspicion" >
+        insert into t_suspicion(account_no) values(#{accountNo})
+    </insert>
+
+    <select id="listAllSuspicion" resultType="string" >
+        select account_no from t_suspicion
+    </select>
+
+
+
+    <select id="selectNextSuspicion" resultMap="tradeTrace">
+        select *
+        from accountant.acctrans_trans_log@zwkj
+        where
+
+        raw_add_time > to_date('20160205', 'yyyymmdd')
+        and raw_add_time &lt; to_date('20160206', 'yyyymmdd')
+        and trans_amount = '10000000'
+
+        and (payer_account = #{accountNo} or payee_account = #{accountNo})
+    </select>
+
+
+</mapper>
